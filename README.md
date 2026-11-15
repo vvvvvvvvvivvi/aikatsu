@@ -4,7 +4,7 @@ A small web page that imitates the feel of playing the Aikatsu! arcade cabinet. 
 
 It is a single file (index.html) with no build step and no dependencies.
 
-Features
+### Features
 - Video screen: paste any YouTube link and the video plays inside a cabinet-style screen.
 - Two control layouts: a three-panel pad (up, left and right arrows) and a set of six arcade buttons in two clusters. A switch above the pad changes between them.
 - Button feel: buttons sink and light up when pressed, play a synthesised cymbal-style sound, and give a short vibration on devices that support it.
@@ -16,7 +16,7 @@ Controls (Layout + Input)
 
 Click or tap the page once first so it can receive keyboard input. Browsers also only allow sound after the first interaction, so the first press on some devices (Safari in particular) may be silent.
 
-Using it
+### Using it
 1. Open the page.
 2. Paste a YouTube link into the box under the screen and press Play.
 3. Press along with the buttons.
@@ -25,7 +25,7 @@ Using it
 
 * Supported link formats: standard watch links, youtu.be short links, mobile links, embed links and Shorts links.
 
-Technical notes
+### Technical notes
 Plain HTML, CSS and JavaScript in one file.
 Button sounds are generated in the browser with the Web Audio API. No audio files are included.
 The button pads are drawn with CSS and inline SVG. No image files are included.
@@ -36,7 +36,7 @@ This is an unofficial, non-commercial fan project made for personal use and lear
 
 This project is an imitation of the general look and feel of an arcade machine. It is not a game, does not run any Aikatsu! software, and does not contain, reproduce or distribute any of the franchise's game data.
 
-Copyright and trademarks
+### Copyright and trademarks
 Aikatsu!, Data Carddass, and all related names, logos, characters, music and artwork are the property of their respective owners and are used here only to identify the subject of this fan project. All rights belong to those owners.
 This repository contains no characters, card art, screenshots, music, voice recordings or other assets from the franchise. The page shows only the title text and shapes drawn in code.
 Videos shown in the player are embedded from YouTube and remain the property of the people who uploaded them and of any rights holders. This project does not host them, and embedding depends on each uploader's settings and YouTube's terms of service.
@@ -48,7 +48,7 @@ Using this project
 
 The original code in this repository is released under the MIT License. 
 
-MIT License
+### MIT License
 
 Copyright (c) 2026 Vivian Lee
 
