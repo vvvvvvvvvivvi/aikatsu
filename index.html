@@ -100,6 +100,9 @@ body{
 .pad .pz.on{transform:translateY(5px)}
 .pad .hl{fill:#fff;stroke:none;opacity:0;pointer-events:none;transition:opacity .05s}
 .pad .pz.on .hl{opacity:.4}
+.k-3ds{display:none}
+.deck[data-mode="3ds"] .k-3ds{display:block}
+.deck[data-mode="3ds"] .k-arcade{display:none}
 /* laptop / landscape: video on the left, controls on the right */
 @media (min-width:900px) and (min-aspect-ratio:5/4){
   body{min-height:100dvh;align-items:center;padding:20px 28px}
@@ -163,7 +166,8 @@ body{
         <g class="pz" data-n="2"><polygon points="398,54 202,122 202,238 398,238" fill="url(#gy)" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><polygon points="348,176 296,136 296,160 254,160 254,192 296,192 296,216" fill="#ffb347" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></g>
       </svg>
     </div>
-    <div class="hint">Multi-touch works: press several buttons at once.</div>
+    <div class="hint k-arcade">Keys: A S D for the left buttons, J K L for the right</div>
+    <div class="hint k-3ds">Keys: ↑ pink, ← green, → yellow</div>
   </section>
 </main>
 
@@ -233,6 +237,37 @@ body{
       document.querySelectorAll(".modes button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
     });
   });
+
+  // long press: silent while held, a cymbal hit when you let go
+  var holds={};
+  function holdStart(id){
+    var f=520;for(var i=0;i<id.length;i++)f+=id.charCodeAt(i);
+    holds[id]={t:Date.now(),f:f};
+  }
+  function holdEnd(id){
+    var h=holds[id];if(!h)return;
+    delete holds[id];
+    if(Date.now()-h.t>=350)click(h.f);
+  }
+  function releaseAll(){holds={}}
+  document.querySelectorAll(".btn").forEach(function(b,i){
+    var id="b"+i;
+    b.addEventListener("pointerdown",function(){holdStart(id)});
+    ["pointerup","pointercancel","lostpointercapture"].forEach(function(t){b.addEventListener(t,function(){holdEnd(id)})});
+  });
+  document.querySelectorAll(".pz").forEach(function(z){
+    var id="p"+z.dataset.n;
+    z.addEventListener("pointerdown",function(){holdStart(id)});
+    ["pointerup","pointercancel","lostpointercapture"].forEach(function(t){z.addEventListener(t,function(){holdEnd(id)})});
+  });
+  addEventListener("keydown",function(e){
+    var k=e.key.toLowerCase();
+    if(e.repeat||e.target.tagName==="INPUT")return;
+    if(map[k]!==undefined||kmap[k]!==undefined)holdStart("k"+k);
+  });
+  addEventListener("keyup",function(e){holdEnd("k"+e.key.toLowerCase())});
+  addEventListener("blur",releaseAll);
+  document.addEventListener("visibilitychange",function(){if(document.hidden)releaseAll()});
 
   // YouTube loader
   function vid(u){
