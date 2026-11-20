@@ -1,5 +1,7 @@
 ## Aikatsu (cab)
 
+https://vvvvvvvvvivvi.github.io/aikatsu/ 
+
 A small web page that imitates the feel of playing the *Aikatsu!* arcade cabinet. A YouTube gameplay video plays on the "screen" at the top, and a set of pressable buttons sits below it. The catch is nothing is scored or judged. You watch the video and press along with it.
 
 It is a single file (`index.html`) with no build step and no dependencies.
