@@ -6,7 +6,7 @@
 <title>Aikatsu cabinet</title>
 <style>
 :root{
-  --wall:#f2a9b4; --wall2:#e58fa0; --body:#fbf6f3; --trim:#e9dfe6;
+  --wall:#f0a0ab; --wall2:#f0a0ab; --body:#fbf6f3; --trim:#e9dfe6;
   --blue:#3b4fa8; --blue2:#6a7fd6; --text:#4a2f45;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
@@ -19,7 +19,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 html,body{margin:0;min-height:100%;background:var(--wall)}
 body{
   font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Rounded Mplus 1c",system-ui,sans-serif;
-  background:radial-gradient(ellipse at 50% 0%,var(--wall) 0%,var(--wall2) 100%);
+  background:var(--wall);
   color:var(--text); display:flex; justify-content:center; padding:16px;
 }
 .cab{width:min(100%,760px);display:flex;flex-direction:column}
@@ -103,6 +103,32 @@ body{
 .k-3ds{display:none}
 .deck[data-mode="3ds"] .k-3ds{display:block}
 .deck[data-mode="3ds"] .k-arcade{display:none}
+/* machine look: flat colours, striped marquee, song-select screen */
+.marquee{background:repeating-linear-gradient(90deg,#fff 0 14px,#dde4f6 14px 28px);color:#e0245e;justify-content:center;gap:14px;position:relative;overflow:hidden;text-shadow:-2px 0 #fff,2px 0 #fff,0 -2px #fff,0 2px #fff,0 3px 0 #b0173f}
+.marquee small{background:#3b4fa8;color:#fff;padding:.25em .8em;border-radius:4px;text-shadow:none;opacity:1}
+.marquee::before,.marquee::after{content:"\2605";position:absolute;top:50%;transform:translateY(-50%);font-size:1.7em;text-shadow:none}
+.marquee::before{left:14px;color:#c9a64a}.marquee::after{right:14px;color:#4a5fb8}
+.deck{background:#fbf6f3}.deck::before,.glare{display:none}
+.cluster{background:#e6dcf5}
+.screen{container-type:inline-size}
+.menu{position:absolute;inset:0;background:#f2b95e;overflow:hidden;font-weight:800;color:#6a3f9a}
+.menu::before{content:"";position:absolute;left:0;right:0;top:25cqw;height:24cqw;background:#fbe9c8}
+.m-title{position:absolute;left:3cqw;top:3cqw;font-size:3cqw;padding:.8cqw 4cqw;background:#fff;border:.5cqw solid #b79ae0;border-radius:4cqw}
+.m-count{position:absolute;right:3cqw;top:2.5cqw;width:11cqw;aspect-ratio:1;border-radius:50%;background:#cfd3e6;border:.6cqw solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;font-size:2cqw}
+.m-count b{font-size:4cqw}
+.m-name{position:absolute;left:50%;top:13cqw;transform:translateX(-50%);max-width:74cqw;display:flex;align-items:center;gap:1.5cqw;font-size:4.4cqw;color:#7a2f86;background:#fff;border:.5cqw solid #9d6fd0;padding:.8cqw 3cqw;border-radius:1.4cqw;white-space:nowrap}
+.m-name span{overflow:hidden;text-overflow:ellipsis}
+.m-diff{font-style:normal;font-size:2.2cqw;color:#fff;padding:.4cqw 1.6cqw;border-radius:3cqw;background:#e0245e}
+.m-diff.medium{background:#e0a400}
+.m-row{position:absolute;left:0;right:0;top:28cqw;height:20cqw;display:flex;align-items:center;justify-content:center;gap:2.2cqw}
+.it{width:14cqw;height:14cqw;border:.7cqw solid #7c5cc4;border-radius:1.2cqw;position:relative;overflow:hidden;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:4cqw}
+.it img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.it.sel{width:18cqw;height:18cqw;border-color:#fff;box-shadow:0 0 0 .8cqw #8a63d8;transform:translateY(-1cqw)}
+.m-arrow{position:absolute;top:35cqw;width:0;height:0;border-top:2.4cqw solid transparent;border-bottom:2.4cqw solid transparent;cursor:pointer}
+.m-arrow.l{left:2.5cqw;border-right:3.6cqw solid #3fd45a}.m-arrow.r{right:2.5cqw;border-left:3.6cqw solid #ffcf1f}
+.m-bar{position:absolute;left:0;right:0;bottom:0;height:8cqw;background:#6b3fa0;color:#fff;font-size:3cqw;display:flex;align-items:center;justify-content:center;gap:1.2cqw}
+.dot{width:4.5cqw;height:4.5cqw;border-radius:50%;border:.5cqw solid #fff;display:inline-block}
+.dot.g{background:#3fd45a}.dot.y{background:#ffcf1f}.dot.r{background:#ff4f76}
 /* laptop / landscape: video on the left, controls on the right */
 @media (min-width:900px) and (min-aspect-ratio:5/4){
   body{min-height:100dvh;align-items:center;padding:20px 28px}
@@ -127,13 +153,21 @@ body{
 
   <div class="bezel">
     <div class="screen" id="screen">
-      <div class="idle" id="idle"><b>Insert a gameplay video</b><span>Paste a YouTube link below, then tap Play</span></div>
+      <div class="menu" id="menu">
+        <div class="m-title">ステージを選んでね</div>
+        <div class="m-count" id="mCount"></div>
+        <div class="m-name"><span id="mName"></span><i class="m-diff" id="mDiff"></i></div>
+        <div class="m-arrow l" id="mPrev"></div><div class="m-arrow r" id="mNext"></div>
+        <div class="m-row" id="mRow"></div>
+        <div class="m-bar"><i class="dot g"></i><i class="dot y"></i>でえらんで<i class="dot r"></i>で決定だよ！</div>
+      </div>
       <div class="glare"></div>
     </div>
   </div>
 
   <form class="load" id="loadForm">
-    <input id="url" type="text" inputmode="url" placeholder="Paste YouTube link" aria-label="YouTube link">
+    <button type="button" id="listBtn" style="background:#8a63d8">Songs</button>
+    <input id="url" type="text" inputmode="url" placeholder="Or paste your own YouTube link" aria-label="YouTube link">
     <button type="submit">Play</button>
     <a id="ytOpen" href="#" target="_blank" rel="noopener" hidden style="background:#8a6a85">Open on YouTube</a>
     <a id="search" href="https://www.youtube.com/results?search_query=%E3%82%A2%E3%82%A4%E3%82%AB%E3%83%84!+%E3%83%87%E3%83%BC%E3%82%BF%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9+%E3%83%97%E3%83%AC%E3%82%A4%E5%8B%95%E7%94%BB+%E7%AD%90%E4%BD%93" target="_blank" rel="noopener">Find videos</a>
@@ -166,7 +200,7 @@ body{
         <g class="pz" data-n="2"><polygon points="398,54 202,122 202,238 398,238" fill="url(#gy)" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><polygon points="348,176 296,136 296,160 254,160 254,192 296,192 296,216" fill="#ffb347" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></g>
       </svg>
     </div>
-    <div class="hint k-arcade">Keys: A S D for the left buttons, J K L for the right</div>
+    <div class="hint k-arcade">Keys: red A / J, green D / K, yellow S / L</div>
     <div class="hint k-3ds">Keys: ↑ pink, ← green, → yellow</div>
   </section>
 </main>
@@ -215,7 +249,7 @@ body{
     b.addEventListener("contextmenu",function(e){e.preventDefault()});
   });
   // keyboard: A S D  /  J K L
-  var map={a:0,s:1,d:2,j:3,k:4,l:5};
+  var map={a:0,d:1,s:2,j:3,k:4,l:5};
   var all=document.querySelectorAll(".btn");
   addEventListener("keydown",function(e){var i=map[e.key.toLowerCase()];if(i!==undefined&&!e.repeat&&e.target.tagName!=="INPUT"){all[i].classList.add("on");click(520+i*40)}});
   addEventListener("keyup",function(e){var i=map[e.key.toLowerCase()];if(i!==undefined)all[i].classList.remove("on")});
@@ -269,21 +303,82 @@ body{
   addEventListener("blur",releaseAll);
   document.addEventListener("visibilitychange",function(){if(document.hidden)releaseAll()});
 
-  // YouTube loader
-  function vid(u){
-    var m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);return m?m[1]:null;
+  // song menu
+  var SONGS=[
+   {id:"UoEO_tK53ck",s:0,t:"オリジナルスター☆彡",d:"hard"},
+   {id:"KbYpPqR-ofo",s:118,t:"Wake up my music",d:"hard"},
+   {id:"HJSZbC5cnKM",s:127,t:"MY STARWAY☆",d:"hard"},
+   {id:"cwZBNZkF4UQ",s:0,t:"fashion check!",d:"hard"},
+   {id:"XO_2jNhCqTw",s:0,t:"アイドル活動！",d:"hard"},
+   {id:"1meOdSe6XTQ",s:0,t:"オトナモード",d:"hard"},
+   {id:"LzlDy5edLzo",s:0,t:"永遠の灯",d:"hard"},
+   {id:"UXByUTuzQso",s:0,t:"タルト・タタン",d:"hard"},
+   {id:"IRXpa13-SYM",s:155,t:"Move on now!",d:"hard"},
+   {id:"VOUjplkNInE",s:320,t:"LOVE GAME!",d:"hard"},
+   {id:"4UFUXl90XgQ",s:117,t:"lucky train !",d:"hard"},
+   {id:"sl3WkAc48rA",s:23,t:"Chica×Chica",d:"hard"}
+  ];
+  var tints=["#7c5cc4","#d86a9a","#4aa3d8","#e8a23a","#5fbf7a"];
+  var scr=document.getElementById("screen"),menu=document.getElementById("menu"),row=document.getElementById("mRow");
+  var cur=0,menuOn=true,yt=document.getElementById("ytOpen");
+  function renderMenu(){
+    var n=SONGS.length,h="";
+    for(var o=-2;o<=2;o++){
+      var i=(cur+o+n)%n;
+      h+='<div class="it'+(o?'':' sel')+'" data-i="'+i+'" style="background:'+tints[i%5]+'"><b>'+('0'+(i+1)).slice(-2)+'</b><img src="https://img.youtube.com/vi/'+SONGS[i].id+'/mqdefault.jpg" alt=""></div>';
+    }
+    row.innerHTML=h;
+    row.querySelectorAll("img").forEach(function(m){m.addEventListener("error",function(){m.remove()})});
+    document.getElementById("mName").textContent=SONGS[cur].t;
+    var d=document.getElementById("mDiff");d.textContent=SONGS[cur].d.toUpperCase();d.className="m-diff "+SONGS[cur].d;
+    document.getElementById("mCount").innerHTML="<span>きょく</span><b>"+(cur+1)+"</b><span>/ "+n+"</span>";
   }
+  function loadVid(id,st){
+    var old=scr.querySelector("iframe");if(old)old.remove();
+    var f=document.createElement("iframe");
+    f.src="https://www.youtube.com/embed/"+id+"?playsinline=1&rel=0&modestbranding=1&autoplay=1"+(st?"&start="+st:"");
+    f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;
+    scr.insertBefore(f,menu);menu.style.display="none";menuOn=false;
+    yt.href="https://www.youtube.com/watch?v="+id+(st?"&t="+st+"s":"");yt.hidden=false;
+  }
+  function showMenu(){
+    var old=scr.querySelector("iframe");if(old)old.remove();
+    menu.style.display="block";menuOn=true;yt.hidden=true;renderMenu();
+  }
+  function nav(a){
+    if(!menuOn)return;
+    var n=SONGS.length;
+    if(a==="prev"){cur=(cur+n-1)%n;renderMenu()}
+    else if(a==="next"){cur=(cur+1)%n;renderMenu()}
+    else loadVid(SONGS[cur].id,SONGS[cur].s);
+  }
+  row.addEventListener("click",function(e){
+    var t=e.target.closest(".it");if(!t)return;
+    var i=+t.dataset.i;if(i===cur)nav("ok");else{cur=i;renderMenu()}
+  });
+  document.getElementById("mPrev").addEventListener("click",function(){nav("prev")});
+  document.getElementById("mNext").addEventListener("click",function(){nav("next")});
+  // red = pick, green = left, yellow = right (same on the pad, arcade buttons and keyboard)
+  var acts=["ok","prev","next"];
+  document.querySelectorAll(".btn").forEach(function(b,i){b.addEventListener("pointerdown",function(){nav(acts[i%3])})});
+  document.querySelectorAll(".pz").forEach(function(z){z.addEventListener("pointerdown",function(){nav(acts[+z.dataset.n])})});
+  var kn={a:"ok",d:"prev",s:"next",j:"ok",k:"prev",l:"next",arrowup:"ok",arrowleft:"prev",arrowright:"next",enter:"ok"};
+  addEventListener("keydown",function(e){
+    if(e.repeat||e.target.tagName==="INPUT")return;
+    var a=kn[e.key.toLowerCase()];if(a)nav(a);
+  });
+
+  // custom YouTube link
+  function vid(u){var m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);return m?m[1]:null}
+  var urlIn=document.getElementById("url");
   document.getElementById("loadForm").addEventListener("submit",function(e){
     e.preventDefault();
-    var id=vid(document.getElementById("url").value.trim());
-    var s=document.getElementById("screen"),idle=document.getElementById("idle");
-    if(!id){idle.querySelector("b").textContent="That link isn't a YouTube video";idle.querySelector("span").textContent="Copy the address from a video page and paste it again";return}
-    var old=s.querySelector("iframe");if(old)old.remove();
-    var f=document.createElement("iframe");
-    f.src="https://www.youtube.com/embed/"+id+"?playsinline=1&rel=0&modestbranding=1";
-    f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;
-    s.insertBefore(f,s.querySelector(".glare"));idle.style.display="none";var o=document.getElementById("ytOpen");o.href="https://www.youtube.com/watch?v="+id;o.hidden=false;
+    var u=urlIn.value.trim(),id=vid(u);
+    if(!id){urlIn.value="";urlIn.placeholder="That isn't a YouTube link, try again";return}
+    var m=u.match(/[?&](?:t|start)=(\d+)/);loadVid(id,m?+m[1]:0);
   });
+  document.getElementById("listBtn").addEventListener("click",showMenu);
+  renderMenu();
 })();
 </script>
 </body>
