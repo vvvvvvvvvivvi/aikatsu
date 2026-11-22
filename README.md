@@ -42,38 +42,34 @@ Supported link formats: standard watch links, `youtu.be` short links, mobile lin
 - The video is a standard YouTube embed. The page does not download, copy or host any video.
 
 ## Disclaimer
-
+ 
 This is an unofficial, non-commercial fan project made for personal use and learning. It is **not** affiliated with, endorsed by or connected to Bandai, Bandai Namco, Sunrise, BN Pictures, TV Tokyo, Dentsu or any other rights holder of the *Aikatsu!* franchise.
-
+ 
 This project is an imitation of the general look and feel of an arcade machine. It is not a game, does not run any *Aikatsu!* software, and does not contain, reproduce or distribute any of the franchise's game data.
-
+ 
 ## Copyright and trademarks
-
+ 
 - *Aikatsu!*, *Data Carddass*, and all related names, logos, characters, music and artwork are the property of their respective owners and are used here only to identify the subject of this fan project. All rights belong to those owners.
 - Song thumbnails in the menu are loaded live from YouTube and are not stored in this repository.
-- This repository contains **no** characters, card art, screenshots, music, voice recordings or other assets from the franchise. The page shows only the title text and shapes drawn in code.
+- This repository contains no characters, card art, screenshots, music or voice recordings from the franchise. The one exception is the star emblem used as the browser tab icon. It is franchise artwork that belongs to its rights holders, it is included only as a fan tribute, and it will be removed on request.
 - Videos shown in the player are embedded from YouTube and remain the property of the people who uploaded them and of any rights holders. This project does not host them, and embedding depends on each uploader's settings and YouTube's terms of service.
 - The cabinet design and layout are original CSS and SVG artwork made to resemble the general arrangement of the real machine's controls.
-
 If you are a rights holder and would like something changed or removed, please open an issue on this repository or contact the owner, and it will be dealt with promptly.
-
-## Using this project
-
+ 
+## Using this project 
 ```
-MIT License
-
-Copyright (c) 2026 Vivian Lee
-
+MIT License Vivian Lee
+ 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
+ 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
+ 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -82,6 +78,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
+ 
 The MIT License covers only the original code. It does not give anyone rights to the *Aikatsu!* name or any franchise material, and it does not cover any videos played through the embed.
-atsu! name or any franchise material, and it does not cover any videos played through the embed.
+ 
